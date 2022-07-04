@@ -1,4 +1,3 @@
-from termcolor2 import c
 from tqdm import tqdm
 import time
 """
@@ -51,37 +50,29 @@ def answer_generation(customer_age):
     :type: str
     :return: correct answer
     """
-    for i in tqdm(range(100)):
-        time.sleep(0.01)
+    # for i in tqdm(range(100)):   # Цю строку можна закоментовувати перед запуском автотестів, щоб тести пройшли швидко
+    #     time.sleep(0.01)         # Цю строку можна закоментовувати перед запуском автотестів, щоб тести пройшли швидко
     try:
         int_customer_age = int(customer_age)
     except (ValueError, TypeError):
-        return "Ваш вік має бути в цілих цифрах!"
+        print("Ваш вік має бути в цілих цифрах!")
     else:
         if int_customer_age <= 0:
-            return "Ваш вік не може бути нуль або мінусове значення!"
+            print("Ваш вік не може бути нуль або мінусове значення!")
         else:
             years = age_ending(int_customer_age)
             if customer_age.count(customer_age[0]) == len(customer_age) and len(customer_age) != 1:
-                print(c(f"О, вам {int_customer_age} {years}! Який цікавий вік!").green)
-            if int_customer_age < 7:
-                return f"Тобі ж {int_customer_age} {years}! Де твої батьки?"
+                print(f"О, вам {int_customer_age} {years}! Який цікавий вік!")
+            elif int_customer_age < 7:
+                print(f"Тобі ж {int_customer_age} {years}! Де твої батьки?")
             elif int_customer_age < 16:
-                return f"Тобі лише {int_customer_age} {years}, а це фільм для дорослих!"
+                print(f"Тобі лише {int_customer_age} {years}, а це фільм для дорослих!")
             elif int_customer_age > 65:
-                return f"Вам {int_customer_age} {years}? Покажіть пенсійне посвідчення!"
+                print(f"Вам {int_customer_age} {years}? Покажіть пенсійне посвідчення!")
             else:
-                return f"Незважаючи на те, що вам {int_customer_age} {years}, білетів всеодно нема!"
+                print(f"Незважаючи на те, що вам {int_customer_age} {years}, білетів всеодно нема!")
 
 
-def answer_print(entered_age):
-    """
-    Function for print generated answer
-    :param entered_age: input customer age
-    :type: str
-    :return: print of correct answer
-    """
-    print(c(answer_generation(entered_age)).yellow)
+# answer_generation(input("Введіть ваш вік: "))          # Цю строку необхідно закоментовувати перед запуском автотестів
 
 
-# answer_print(input("Введіть ваш вік: "))             #Цю строку необхідно закоментовувати перед запуском автотестів
