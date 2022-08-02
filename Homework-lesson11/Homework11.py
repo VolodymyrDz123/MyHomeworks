@@ -57,10 +57,9 @@ class School:
         total = 0
         learners = 0
         for learner in self.learners:
-            if learner.marks:
+            for mark in learner.marks:
+                total += mark
                 learners += 1
-                for mark in learner.marks:
-                    total += mark
         try:
             avg_mark = round(total / learners, 1)
         except ZeroDivisionError:
@@ -228,10 +227,9 @@ class SchoolClass:
         total = 0
         learners = 0
         for learner in self.learners:
-            if learner.marks:
+            for mark in learner.marks:
+                total += mark
                 learners += 1
-                for mark in learner.marks:
-                    total += mark
         try:
             avg_mark = round(total / learners, 1)
         except ZeroDivisionError:
