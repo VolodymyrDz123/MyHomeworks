@@ -50,7 +50,10 @@ class School:
             all_salary += cleaner.salary
         all_salary += self.director.salary
         all_salary += self.head_teacher.salary
-        in_come = (all_salary + expected_profit) / len(self.learners)
+        try:
+            in_come = (all_salary + expected_profit) / len(self.learners)
+        except ZeroDivisionError:
+            return f"У школі поки що немає учнів"
         return f"Кожен учень має заплатити по {round(in_come, 1)} за рік"
 
     def get_school_marks(self):
