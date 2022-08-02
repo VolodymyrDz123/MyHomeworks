@@ -55,9 +55,17 @@ class School:
 
     def get_school_marks(self):
         total = 0
+        learners = 0
         for learner in self.learners:
-            total += learner.get_average_mark()
-        return round(total / len(self.learners), 1)
+            for mark in learner.marks:
+                total += mark
+                learners += 1
+        try:
+            avg_mark = round(total / learners, 1)
+        except ZeroDivisionError:
+            return f"У жодного учня школи поки що немає балів"
+        return f"Середня оцінка школи становить \"{avg_mark}\" балів"
+
 
 
 class Personal(ABC):
@@ -94,9 +102,10 @@ class Learner(Personal):
             average = 0
             for mark in self.marks:
                 average += mark
-            return round(average / len(self.marks), 1)
+            average_mark = round(average / len(self.marks), 1)
+            return f"Середня оцінка для {self.name} {self.surname} становить \"{average_mark}\""
         else:
-            return 0
+            return f"У {self.name} {self.surname} поки що відсутні оцінки"
 
     def get_reward(self):
         self.marks.append(12)
@@ -216,9 +225,16 @@ class SchoolClass:
 
     def get_class_marks(self):
         total = 0
+        learners = 0
         for learner in self.learners:
-            total += learner.get_average_mark()
-        return round(total / len(self.learners), 1)
+            for mark in learner.marks:
+                total += mark
+                learners += 1
+        try:
+            avg_mark = round(total / learners, 1)
+        except ZeroDivisionError:
+            return f"У жодного учня класу поки що немає балів"
+        return f"Середня оцінка класу становить \"{avg_mark}\" балів"
 
     def delete_class(self):
         for every_lerner in self.learners:
@@ -236,10 +252,22 @@ if __name__ == "__main__":
     teacher_1 = Teacher("teacher_1", "lastname", datetime.date(2000, 2, 20), school_1)
     teacher_2 = Teacher("teacher_2", "lastname", datetime.date(2000, 2, 20), school_1)
     school_class_1 = SchoolClass(school_1, "1-A", teacher_1)
+    school_class_2 = SchoolClass(school_1, "1-Б", teacher_2)
     lerner_1 = Learner("lerner_1", "lastname", datetime.date(2000, 2, 20), school_1)
     lerner_2 = Learner("lerner_2", "lastname", datetime.date(2000, 2, 20), school_1)
     lerner_3 = Learner("lerner_3", "lastname", datetime.date(2000, 2, 20), school_1)
     cleaner_1 = SchoolCleaner("cleaner_1", "lastname", datetime.date(2000, 2, 20), school_1)
 
-    print(school_1.get_school_fees())
+    # print(school_1.get_school_fees())
+    school_class_1.add_learner(lerner_1)
+    school_class_1.add_learner(lerner_2)
+    school_class_2.add_learner(lerner_3)
+    print(teacher_1.mark(12, lerner_1))
+    print(teacher_1.mark(8, lerner_2))
+    print(teacher_2.mark(6, lerner_3))
+    print(lerner_1.get_average_mark())
+    print(lerner_2.get_average_mark())
+    print(lerner_3.get_average_mark())
+    print(school_class_1.get_class_marks())
+    print(school_1.get_school_marks())
 
