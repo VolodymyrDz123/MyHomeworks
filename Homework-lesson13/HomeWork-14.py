@@ -73,7 +73,7 @@ class CoffeeMachine:
             self.money = 0
             human.money += change
             return f"Ваш напій готовий, знято {expected_coffee.price - discount},знижка {discount} грн, здача {round(change, 2)} грн повернута"
-        return f"У автоматі недостатньо коштів, зараз наявно - {self.money}, а необхідно - {expected_coffee.price}"
+        raise ValueError(f"У автоматі недостатньо коштів, зараз наявно - {self.money} грн, а необхідно - {expected_coffee.price} грн")
 
 
 class Human:
@@ -82,12 +82,18 @@ class Human:
         self.surname = surname
         self.money = money
 
-    def give_money(self, money: int, coffee_machine: CoffeeMachine):
-        if self.money < money:
-            return f"У вас {self.money}, ви не можете вставити у апарат {money}"
-        coffee_machine.money += money
-        self.money -= money
-        return f"{self.money} вставлено у апарат"
+    def give_money(self, coffee_machine: CoffeeMachine):
+        money_input = input("Вкажіть яку суму ви хочете вставити у апарат: ")
+        try:
+            money = int(money_input)
+        except ValueError:
+            raise ValueError(f"Приймається тільки числове значення, а ви ввели {money_input} з типом {type(money_input)}")
+        else:
+            if self.money < money:
+                raise ValueError(f"У вас {self.money} грн, ви не можете вставити у апарат {money} грн")
+            coffee_machine.money += money
+            self.money -= money
+            return f"{money} грн вставлено у апарат"
 
     def order(self, coffee_machine: CoffeeMachine):
         expected_coffee = input("Виберіть яку каву ви хочете(\"latte\", \"cappuccino\" та \"espresso\"): ")
@@ -114,6 +120,6 @@ if __name__ == "__main__":
     human_1 = Human("Vova", "Dz", 500)
     coffee_machine_1 = CoffeeMachine()
     print(human_1.__dict__)
-    print(human_1.give_money(400, coffee_machine_1))
+    print(human_1.give_money(coffee_machine_1))
     print(human_1.order(coffee_machine_1))
     print(human_1.__dict__)
